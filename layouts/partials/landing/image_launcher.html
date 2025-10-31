@@ -1,0 +1,41 @@
+{{ $sectionTitle := .Scratch.Get "sectionTitle" }}
+{{ with (index .Site.Data.landing $sectionTitle) }}
+{{ if eq .enable true }}
+{{ $ocol := .col }}
+{{ $sep := .separator | default false }}
+{{ $imageHeight := .imageHeight | default 200 }}
+{{ $col := div 12 (.col | default 4) }}
+<!-- Features Start -->
+<section id="{{ $sectionTitle }}" class="{{ .bgColor }}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <div class="section-title">
+                    {{ with .title }}
+                        <h4 class="title fw-bold mb-4">{{ . }}</h4>
+                    {{ end }}
+                    {{ with .subtitle }}
+                        <p class="text-muted para-desc mb-4 pb-2 mx-auto">{{ . | markdownify }}</p>
+                    {{ end }}
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+
+        <div class="row">
+            {{ $len := len .items }}
+            {{ range $idx, $el := .items }}
+                <div class="col-md-{{ $col }} col-12 {{ if and $sep (le $idx (sub $len 2)) }}border-end border-secondary{{ end }} d-flex align-items-center p-5">
+                    <a href="{{ $el.href }}" class="text-center">
+                        <img class="img-fluid" src="{{ $el.image }}" height="{{ $el.height }}" alt="{{ $el.imageAlt }}">
+                    </a>
+                </div>
+                <!--end col-->
+            {{ end }}
+        </div>
+        <!--end row-->
+    </div>
+    <!--end container-->
+</section>
+<!-- features End -->
+{{ end }}
+{{ end }}
